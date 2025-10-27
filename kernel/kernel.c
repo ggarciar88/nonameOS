@@ -1,11 +1,21 @@
-void main() {
-    const char* message = "Hello from nonameOS kernel!";
-    char* video_memory = (char*)0xb8000;
+#include "screen.h"
+#include "keyboard.h"
 
-    for (int i = 0; message[i] != '\0'; ++i) {
-        video_memory[i * 2] = message[i];
-        video_memory[i * 2 + 1] = 0x07; // Light grey on black
+void handle_command(const char* input) {
+    if (strcmp(input, "help\n") == 0) {
+        print("\nAvailable commands:\nhelp\nclear\necho\n");
+    } else if (strcmp(input, "clear\n") == 0) {
+        clear_screen();
+    } else if (strncmp(input, "echo ", 5) == 0) {
+        print("\n");
+        print(input + 5);
+    } else {
+        print("\nUnknown command\n");
     }
+}
 
-    while (1); // Halt
+void main() {
+    clear_screen();
+    print("nonameOS Shell\n> ");
+    while (1);
 }
