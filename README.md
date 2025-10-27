@@ -29,7 +29,7 @@ nonameOS is a bare-metal operating system written in C and x86 Assembly. It boot
 
 ##  Build Instructions
 
-To compile and run MicroOS using QEMU:
+To compile and run nonameOS using QEMU:
   make
   qemu-system-i386 -fda build/os.iso
 
