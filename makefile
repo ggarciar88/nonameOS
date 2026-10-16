@@ -1,14 +1,17 @@
-all: os.iso
+all: os.img
 
-bootloader.bin: bootloader/boot.asm
-    nasm -f bin bootloader/boot.asm -o bootloader.bin
+os.img: bootloader/boot.asm kernel/kernel.bin
+	nasm -f bin bootloader/boot.asm -o boot.bin
+	cat boot.bin kernel/kernel.bin > os.img
 
-kernel.bin: kernel/kernel.c kernel/kernel.ld
-    i686-elf-gcc -ffreestanding -c kernel/kernel.c -o kernel.o
-    i686-elf-ld -T kernel/kernel.ld -o kernel.bin kernel.o
+kernel/kernel.bin: kernel/kernel.o kernel/screen.o kernel/keyboard.o
+	ld -m elf_i386 -o kernel/kernel.bin -T kernel/kernel.ld $^ --oformat binary
 
-os.iso: bootloader.bin kernel.bin
-    cat bootloader.bin kernel.bin > build/os.iso
+%.o: %.c
+	gcc -m32 -ffreestanding -c $< -o $@
+
+run: os.img
+	qemu-system-i386 -fda os.img
 
 clean:
-    rm -f bootloader.bin kernel.o kernel.bin build/os.iso
+	rm -f boot.bin os.img kernel/*.o kernel/kernel.bin
