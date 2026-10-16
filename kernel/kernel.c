@@ -1,21 +1,12 @@
-#include "screen.h"
-#include "keyboard.h"
-
-void handle_command(const char* input) {
-    if (strcmp(input, "help\n") == 0) {
-        print("\nAvailable commands:\nhelp\nclear\necho\n");
-    } else if (strcmp(input, "clear\n") == 0) {
-        clear_screen();
-    } else if (strncmp(input, "echo ", 5) == 0) {
-        print("\n");
-        print(input + 5);
-    } else {
-        print("\nUnknown command\n");
-    }
-}
+#include "../include/screen.h"
+#include "../include/keyboard.h"
 
 void main() {
     clear_screen();
-    print("nonameOS Shell\n> ");
-    while (1);
+    print("Welcome to ZenithOS Kernel v1.0\n");
+    print("Type something: ");
+
+    while(1) {
+        // Main kernel loop
+    }
 }
